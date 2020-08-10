@@ -1,0 +1,20 @@
+<resources>
+    <string name="app_name">Project</string>
+    <string name="email">Email</string>
+    <string name="password">Password</string>
+    <string name="create_acct">CREATE  ACCOUNT</string>
+    <string name="login">LOGIN</string>
+    <string name="first_name">First Name</string>
+    <string name="last_name">Last Name</string>
+    <string name="sign_out">Sign Out</string>
+    <string name="posts">POSTS</string>
+    <string name="news">NEWS</string>
+    <string name="navigation_drawer_open">Open navigation drawer</string>
+    <string name="navigation_drawer_close">Close navigation drawer</string>
+    <string name="post_title">Post Title here...</string>
+    <string name="post_description">Post Description here...</string>
+    <string name="submit_text">SUBMIT</string>
+    <string name="add">Add Post</string>
+    <string name="header_email">email@domain_name.com</string>
+    <string name="header_userName">FirstName LastName</string>
+</resources>
