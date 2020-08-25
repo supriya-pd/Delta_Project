@@ -23,6 +23,8 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
+import com.theartofdev.edmodo.cropper.CropImage;
+import com.theartofdev.edmodo.cropper.CropImageView;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -39,6 +41,7 @@ public class AddPostActivity extends AppCompatActivity {
     private FirebaseUser mUser;
     private ProgressDialog mProgress;
     private Uri mImageUri;
+    private Uri resultUri;
     private static final int GALLERY_CODE = 1;
 
     @Override
@@ -86,26 +89,45 @@ public class AddPostActivity extends AppCompatActivity {
 
         if (requestCode == GALLERY_CODE && resultCode == RESULT_OK) {
             mImageUri = data.getData();
-            mPostImage.setImageURI(mImageUri);
 
-
+            CropImage.activity(mImageUri)
+                    .setAspectRatio(1, 1)
+                    .setGuidelines(CropImageView.Guidelines.ON)
+                    .start(this);
         }
+
+            if (requestCode == CropImage.CROP_IMAGE_ACTIVITY_REQUEST_CODE) {
+                CropImage.ActivityResult result = CropImage.getActivityResult(data);
+                if (resultCode == RESULT_OK) {
+                    resultUri = result.getUri();
+                    mPostImage.setBackgroundResource(0);
+                    mPostImage.setImageURI(resultUri);
+
+                }
+                else if (resultCode == CropImage.CROP_IMAGE_ACTIVITY_RESULT_ERROR_CODE) {
+                    mPostImage.setBackgroundResource(R.drawable.add_btn);
+
+                    Exception error = result.getError();
+                    Toast.makeText(AddPostActivity.this,error.toString(), Toast.LENGTH_SHORT).show();
+                }
+    }
     }
 
     private void startPosting() {
 
-        mProgress.setMessage("Posting to blog...");
-        mProgress.show();
+
 
         final String titleVal = mPostTitle.getText().toString().trim();
         final String descVal = mPostDesc.getText().toString().trim();
 
         if (!TextUtils.isEmpty(titleVal) && !TextUtils.isEmpty(descVal)
                 && mImageUri != null) {
+            mProgress.setMessage("Posting to blog...");
+            mProgress.show();
 
             final StorageReference filepath = mStorage.child("Project_Blog_Images").
-                    child(mImageUri.getLastPathSegment());
-            filepath.putFile(mImageUri).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
+                    child(resultUri.getLastPathSegment());
+            filepath.putFile(resultUri).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
                 @Override
                 public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
 
@@ -128,6 +150,7 @@ public class AddPostActivity extends AppCompatActivity {
                                 dataToSave.put("timestamp", String.valueOf(java.lang.System.currentTimeMillis()));
                                 dataToSave.put("userId", mUser.getUid());
                                 dataToSave.put("username", mUser.getEmail());
+                                dataToSave.put("key",newPost.getKey());
 
                                 newPost.setValue(dataToSave);
 
@@ -153,5 +176,13 @@ public class AddPostActivity extends AppCompatActivity {
         {
             Toast.makeText(AddPostActivity.this,"please enter TITLE and DESCRIPTION ",Toast.LENGTH_LONG).show();
         }
+    }
+
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+        Intent intent=new Intent(AddPostActivity.this,DashActivity.class);
+        startActivity(intent);
+        finish();
     }
 }

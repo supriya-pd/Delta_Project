@@ -19,22 +19,22 @@
             android:layout_height="wrap_content">
 
             <Button
-                android:id="@+id/fav_btn"
+                android:id="@+id/fav_btn_fav"
                 android:layout_width="50dp"
                 android:layout_height="50dp"
-                android:background="@drawable/ic_favorite_border"
+                android:background="@drawable/ic_favorite_black"
                 android:layout_alignParentRight="true"/>
 
 
             <ImageView
-                android:id="@+id/image_view"
+                android:id="@+id/image_view_fav"
                 android:layout_width="match_parent"
                 android:layout_height="200dp"
                 android:scaleType="centerCrop" />
 
 
             <ProgressBar
-                android:id="@+id/progress_load_photo"
+                android:id="@+id/progress_load_photo_fav"
                 style="@android:style/Widget.ProgressBar.Small"
                 android:layout_marginTop="70dp"
                 android:layout_width="match_parent"
@@ -43,10 +43,10 @@
 
 
             <FrameLayout
-                android:id="@+id/layoutDate"
+                android:id="@+id/layoutDateFav"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_alignBottom="@+id/image_view"
+                android:layout_alignBottom="@+id/image_view_fav"
                 android:layout_centerHorizontal="true"
                 android:paddingBottom="16dp"
                 android:background="@drawable/round_white"
@@ -58,7 +58,7 @@
                     android:src="@drawable/ic_date" />
 
                 <TextView
-                    android:id="@+id/publishedAt"
+                    android:id="@+id/publishedAtFav"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:textColor="#000"
@@ -67,7 +67,7 @@
                     android:text="01 January 1990"/>
 
                     <TextView
-                        android:id="@+id/time"
+                        android:id="@+id/timeFav"
                         android:layout_height="wrap_content"
                         android:layout_width="wrap_content"
                         android:textColor="#000"
@@ -79,7 +79,7 @@
             </FrameLayout>
 
             <TextView
-                android:id="@+id/title"
+                android:id="@+id/titleFav"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:paddingLeft="16dp"
@@ -89,7 +89,7 @@
                 android:textSize="16sp"
                 android:text="Title"
                 android:layout_marginTop="10dp"
-                android:layout_below="@+id/image_view"/>
+                android:layout_below="@+id/image_view_fav"/>
 
 
         </RelativeLayout>

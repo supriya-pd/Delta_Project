@@ -31,7 +31,8 @@ public class Fragment_News extends Fragment {
 
 
         if(savedInstanceState==null) {
-            getChildFragmentManager().beginTransaction().replace(R.id.bottom_nav_container, new Fragment_News_Home()).commit();
+            getChildFragmentManager().beginTransaction().replace(R.id.bottom_nav_container, new Fragment_News_Home(),"HOME").commit();
+
         }
 
         }
@@ -43,11 +44,28 @@ public class Fragment_News extends Fragment {
                     switch(menuItem.getItemId()){
 
                         case R.id.home:
-                            getChildFragmentManager().beginTransaction().replace(R.id.bottom_nav_container, new Fragment_News_Home()).commit();
+                            getChildFragmentManager().beginTransaction().replace(R.id.bottom_nav_container, new Fragment_News_Home(),"HOME").commit();
+
+
                             break;
 
                         case R.id.Favorites:
-                            getChildFragmentManager().beginTransaction().replace(R.id.bottom_nav_container, new Fragment_News_Fav()).commit();
+                            getChildFragmentManager().beginTransaction().replace(R.id.bottom_nav_container, new Fragment_News_Fav(),"FAV").commit();
+
+
+                         /*   if(getChildFragmentManager().findFragmentByTag("FAV")!=null){
+                                getChildFragmentManager().beginTransaction().show(getChildFragmentManager().findFragmentByTag("FAV")).commit();
+                            }
+                            else{
+                                getChildFragmentManager().beginTransaction().add(R.id.bottom_nav_container, new Fragment_News_Fav(),"FAV").commit();
+                                }
+                            if(getChildFragmentManager().findFragmentByTag("HOME")!=null)
+                            {
+                                getChildFragmentManager().beginTransaction().hide(getChildFragmentManager().findFragmentByTag("HOME")).commit();
+                            }*/
+
+
+
                             break;
                     }
 

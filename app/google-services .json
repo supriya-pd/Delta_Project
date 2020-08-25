@@ -53,6 +53,43 @@
     },
     {
       "client_info": {
+        "mobilesdk_app_id": "1:1001059087131:android:899e1b6cf2a73418c119be",
+        "android_client_info": {
+          "package_name": "com.example.hope2"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "1001059087131-qh8vlmd3dgllo7u3np6lsb6b94piu3pn.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.hope2",
+            "certificate_hash": "adbd7fdbf6c5beffa59905076654a3ed484cd675"
+          }
+        },
+        {
+          "client_id": "1001059087131-tltmlccuk6q8b1d0qee7059shu7gn7ri.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBx9bxrkmLDLSfE5Bqt3IxqBghZWugFUvQ"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "1001059087131-tltmlccuk6q8b1d0qee7059shu7gn7ri.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    },
+    {
+      "client_info": {
         "mobilesdk_app_id": "1:1001059087131:android:c9c7cc618f8a7b40c119be",
         "android_client_info": {
           "package_name": "com.example.project"

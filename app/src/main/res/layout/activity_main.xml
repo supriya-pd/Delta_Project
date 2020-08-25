@@ -2,14 +2,13 @@
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:background="@color/background"
+    android:background="@drawable/back"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-
     tools:context=".activities.MainActivity">
 
 
-    <EditText
+   <!-- <EditText
         android:id="@+id/emailET"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
@@ -48,49 +47,37 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/emailET"
-        app:layout_constraintVertical_bias="0.048" />
+        app:layout_constraintVertical_bias="0.048" />-->
 
     <Button
         android:id="@+id/loginBTN"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:background="@drawable/custom_button"
         android:text="@string/login"
         android:textColor="@color/button_text"
-        android:background="@drawable/custom_button"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.498"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/passwordET"
-        app:layout_constraintVertical_bias="0.357" />
-
-    <Button
-        android:id="@+id/accountBTN"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:text="@string/create_acct"
-        android:textColor="@color/button_text"
-        android:layout_marginLeft="16dp"
-        android:layout_marginRight="16dp"
-        android:background="@drawable/custom_button"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/loginBTN"
-        app:layout_constraintVertical_bias="0.902" />
-
-    <ToggleButton
-        android:id="@+id/toggleButton"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="ToggleButton"
-        android:textOff="Click to enable Dark Mode"
-        android:textOn="Click to disable DARK MODE"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.904"
+        app:layout_constraintHorizontal_bias="0.452"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.054" />
+        app:layout_constraintVertical_bias="0.428" />
+
+    <!--  <Button
+          android:id="@+id/accountBTN"
+          android:layout_width="0dp"
+          android:layout_height="wrap_content"
+          android:text="@string/create_acct"
+          android:textColor="@color/button_text"
+          android:layout_marginLeft="16dp"
+          android:layout_marginRight="16dp"
+          android:background="@drawable/custom_button"
+          app:layout_constraintBottom_toBottomOf="parent"
+          app:layout_constraintEnd_toEndOf="parent"
+          app:layout_constraintHorizontal_bias="0.0"
+          app:layout_constraintStart_toStartOf="parent"
+          app:layout_constraintTop_toBottomOf="@+id/loginBTN"
+          app:layout_constraintVertical_bias="0.902" />-->
+
+
 </androidx.constraintlayout.widget.ConstraintLayout>

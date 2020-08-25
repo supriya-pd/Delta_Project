@@ -5,8 +5,6 @@ import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 import android.text.TextUtils;
-import android.view.Menu;
-import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -18,7 +16,6 @@ import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.project.R;
-import com.example.project.model.User;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
@@ -36,11 +33,10 @@ import com.google.firebase.storage.UploadTask;
 import com.theartofdev.edmodo.cropper.CropImage;
 import com.theartofdev.edmodo.cropper.CropImageView;
 
-import java.util.HashMap;
-
 public class CreateAccount extends AppCompatActivity {
 
     private FirebaseAuth mAuth;
+    FirebaseDatabase mDatabase;
     private DatabaseReference mDatabaseRef;
      private StorageReference mStorageRef;
 
@@ -62,7 +58,8 @@ public class CreateAccount extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_create_account);
 
-        mDatabaseRef=FirebaseDatabase.getInstance().getReference().child("Project_App_Users");
+       mDatabase=FirebaseDatabase.getInstance();
+        mDatabaseRef=mDatabase.getReference().child("Project_App_Users");
         mStorageRef= FirebaseStorage.getInstance().getReference().child("Profile_pics");
         mAuth=FirebaseAuth.getInstance();
 
@@ -120,7 +117,7 @@ public class CreateAccount extends AppCompatActivity {
                                     public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
                                        // Uri downloadURI=taskSnapshot.getUploadSessionUri();
 
-                                       if (taskSnapshot.getMetadata() != null && taskSnapshot.getMetadata().getReference() != null) {
+                                     if (taskSnapshot.getMetadata() != null && taskSnapshot.getMetadata().getReference() != null) {
 
                                             Task<Uri> result = taskSnapshot.getStorage().getDownloadUrl();
                                             result.addOnSuccessListener(new OnSuccessListener<Uri>() {
@@ -131,12 +128,19 @@ public class CreateAccount extends AppCompatActivity {
                                             });
 
                                         }
+                                   /*  taskSnapshot.getMetadata().getReference().getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
+                                         @Override
+                                         public void onSuccess(Uri uri) {
+                                             profile_pic_url = uri.toString();
+                                         }
+                                     });*/
 
                                         String userId = mAuth.getCurrentUser().getUid();
 
                                         DatabaseReference currentUserDb = mDatabaseRef.child(userId);
                                        /* User user=new User(firstName,lastName,profile_pic_url);
                                         currentUserDb.setValue(user);*/
+
 
                                        currentUserDb.child("firstName").setValue(firstName);
                                         currentUserDb.child("lastName").setValue(lastName);

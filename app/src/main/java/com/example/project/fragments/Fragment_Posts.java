@@ -1,5 +1,6 @@
 package com.example.project.fragments;
 
+import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
@@ -9,17 +10,22 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+import androidx.recyclerview.widget.ItemTouchHelper;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.project.R;
 import com.example.project.activities.AddPostActivity;
+import com.example.project.activities.EditPostActivity;
 import com.example.project.adapters.BlogRecyclerAdapter;
 import com.example.project.model.Blog;
+import com.google.android.material.snackbar.BaseTransientBottomBar;
+import com.google.android.material.snackbar.Snackbar;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.ChildEventListener;
@@ -36,7 +42,7 @@ public class Fragment_Posts extends Fragment {
     private DatabaseReference mDatabaseReference;
     private RecyclerView recyclerView;
     private BlogRecyclerAdapter blogRecyclerAdapter;
-    private List<Blog> blogList;
+    private List<Blog> blogList=new ArrayList<>();
     private FirebaseDatabase mDatabase;
     private FirebaseUser mUser;
     private FirebaseAuth mAuth;
@@ -63,16 +69,12 @@ public class Fragment_Posts extends Fragment {
         mDatabase = FirebaseDatabase.getInstance();
         mDatabaseReference = mDatabase.getReference().child("Projects_Blog");
         mDatabaseReference.keepSynced(true);
-
-
-        blogList = new ArrayList<>();
-
-
+        //blogList = new ArrayList<>();
         recyclerView = (RecyclerView)view.findViewById(R.id.recyclerViewPosts);
-        recyclerView.setHasFixedSize(true);
+        //recyclerView.setHasFixedSize(true);
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
-
-
+        blogRecyclerAdapter = new BlogRecyclerAdapter(getContext(),blogList,mDatabaseReference,mUser);
+        recyclerView.setAdapter(blogRecyclerAdapter);
     }
 
     @Override
@@ -83,17 +85,9 @@ public class Fragment_Posts extends Fragment {
             public void onChildAdded(DataSnapshot dataSnapshot, String s) {
 
                 Blog blog = dataSnapshot.getValue(Blog.class);
-
                 blogList.add(blog);
-
                 Collections.reverse(blogList);
-
-                blogRecyclerAdapter = new BlogRecyclerAdapter(getContext(),blogList);
-                recyclerView.setAdapter(blogRecyclerAdapter);
-                blogRecyclerAdapter.notifyDataSetChanged();
-
-
-
+                blogRecyclerAdapter.updateList(blogList);
             }
 
             @Override
@@ -103,6 +97,7 @@ public class Fragment_Posts extends Fragment {
 
             @Override
             public void onChildRemoved(DataSnapshot dataSnapshot) {
+
 
             }
 
@@ -129,19 +124,15 @@ public class Fragment_Posts extends Fragment {
     @Override
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
         if(item.getItemId()==R.id.add_post) {
-
             if (mUser != null && mAuth != null) {
 
                 startActivity(new Intent(getContext(), AddPostActivity.class));
-               getActivity().finish();
-
+                        ((Activity)getContext()).finish();
             }
-
-
         }
-
         return super.onOptionsItemSelected(item);
     }
+
 
 
 }

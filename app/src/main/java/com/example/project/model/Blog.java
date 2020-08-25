@@ -7,16 +7,32 @@ public class Blog {
     public String image;
     public String timestamp;
     public String userId;
+    String key;
+    String username;
 
     public Blog() {
     }
 
-    public Blog(String title, String desc, String image, String timestamp, String userid) {
+    public Blog(String title, String desc, String image, String timestamp, String userId,String key,String username) {
         this.title = title;
         this.desc = desc;
         this.image = image;
         this.timestamp = timestamp;
-        this.userId = userid;
+        this.userId = userId;
+        this.key=key;
+        this.username=username;
+    }
+
+    public String getUsername(){
+        return username;
+    }
+
+    public String getKey() {
+        return key;
+    }
+
+    public void setKey(String key) {
+        this.key = key;
     }
 
 
@@ -26,6 +42,10 @@ public class Blog {
 
     public void setTitle(String title) {
         this.title = title;
+    }
+
+    public void setUsername(String username) {
+        this.username = username;
     }
 
     public String getDesc() {
@@ -56,7 +76,7 @@ public class Blog {
         return userId;
     }
 
-    public void setUserId(String userid) {
+    public void setUserId(String userId) {
         this.userId = userId;
     }
 

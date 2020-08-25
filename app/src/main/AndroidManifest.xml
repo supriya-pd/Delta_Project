@@ -14,11 +14,12 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
         android:usesCleartextTraffic="true">
-        <activity android:name=".activities.AddPostActivity"></activity>
+        <activity android:name=".activities.EditPostActivity"></activity>
+        <activity android:name=".activities.AddPostActivity" />
         <activity android:name="com.theartofdev.edmodo.cropper.CropImageActivity" />
         <activity
             android:name=".activities.DashActivity"
-            android:theme="@style/AppTheme.NoActionBar"></activity>
+            android:theme="@style/AppTheme.NoActionBar" />
         <activity android:name=".activities.CreateAccount" />
         <activity android:name=".activities.MainActivity">
             <intent-filter>

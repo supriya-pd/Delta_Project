@@ -3,30 +3,30 @@ package com.example.project.activities;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.ActionBarDrawerToggle;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.app.AppCompatDelegate;
 import androidx.appcompat.widget.Toolbar;
 import androidx.core.view.GravityCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
+import android.net.Uri;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.Toast;
+import android.widget.ToggleButton;
 
 import com.example.project.R;
 import com.example.project.fragments.Fragment_News;
 import com.example.project.fragments.Fragment_Posts;
-import com.example.project.model.User;
+import com.google.android.gms.auth.api.signin.GoogleSignInClient;
 import com.google.android.material.navigation.NavigationView;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
-import com.google.firebase.database.DataSnapshot;
-import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
-import com.google.firebase.database.FirebaseDatabase;
-import com.google.firebase.database.ValueEventListener;
 import com.squareup.picasso.Picasso;
 
 public class DashActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
@@ -37,15 +37,85 @@ public class DashActivity extends AppCompatActivity implements NavigationView.On
     private ImageView profile_image;
     private TextView user_email,user_name;
     private DrawerLayout drawerLayout;
+    GoogleSignInClient mSignInClient;
+    FirebaseUser userOfAccount;
+
+    private String GName=null;
+    String GEmail=null;
+    String GPhoto=null;
+
+    ToggleButton button;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_dash);
 
-        profile_image=(ImageView) findViewById(R.id.header_image_view);
-        user_name=(TextView)findViewById(R.id.header_fName);
-        user_email=(TextView)findViewById(R.id.header_email);
+      /* Intent intent=getIntent();
+       GName= intent.getStringExtra("GName");
+       GEmail= intent.getStringExtra("GEmail");
+       GPhoto= intent.getStringExtra("GPhoto");*/
+
+       /* GoogleSignInOptions googleSignInOptions=new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
+                .requestIdToken(getString(R.string.default_web_client_id)).requestEmail().build();
+
+        mSignInClient= GoogleSignIn.getClient(this,googleSignInOptions);*/
+
+
+        mAuth=FirebaseAuth.getInstance();
+        userOfAccount=mAuth.getCurrentUser();
+
+        NavigationView navigationView=(NavigationView)findViewById(R.id.nav_view);
+        View headerView = navigationView.getHeaderView(0);
+
+
+        profile_image=(ImageView) headerView.findViewById(R.id.header_image_view);
+        user_name=(TextView)headerView.findViewById(R.id.header_fName);
+        user_email=(TextView)headerView.findViewById(R.id.header_email);
+        button=(ToggleButton)headerView.findViewById(R.id.toggleButton);
+
+        SharedPreferences sharedPreferences=getSharedPreferences("sharedPrefs",MODE_PRIVATE);
+        final SharedPreferences.Editor editor=sharedPreferences.edit();
+        final boolean isDarkModeOn=sharedPreferences.getBoolean("isDarkModeOn",false);
+
+        if(isDarkModeOn){
+            AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES);
+            button.setChecked(true);
+        }else{
+            AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO);
+            button.setChecked(false);
+        }
+
+        button.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if(isDarkModeOn){
+                    AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO);
+                    button.setChecked(false);
+                    editor.putBoolean("isDarkModeOn",false);
+                }
+                else{
+                    AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES);
+                    button.setChecked(true);
+                    editor.putBoolean("isDarkModeOn",true);
+
+                }
+                editor.apply();
+            }
+        });
+
+
+        if(userOfAccount!=null)
+        {
+
+            GName=userOfAccount.getDisplayName();
+            GEmail=userOfAccount.getEmail();
+            GPhoto=userOfAccount.getPhotoUrl().toString();
+            user_name.setText(GName);
+            user_email.setText(GEmail);
+            Picasso.get().load(Uri.parse(GPhoto)).into(profile_image);
+
+        }
 
 
         Toolbar toolbar = findViewById(R.id.toolbar);
@@ -57,32 +127,12 @@ public class DashActivity extends AppCompatActivity implements NavigationView.On
         drawerLayout.addDrawerListener(drawerToggle);
         drawerToggle.syncState();
 
-       NavigationView navigationView=findViewById(R.id.nav_view);
+
        navigationView.setNavigationItemSelectedListener(this);
        if(savedInstanceState==null) {
            getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, new Fragment_Posts()).commit();
            navigationView.setCheckedItem(R.id.drawer_nav_post);
        }
-
-        mAuth=FirebaseAuth.getInstance();
-       /*mUser=mAuth.getCurrentUser();
-       databaseRef= FirebaseDatabase.getInstance().getReference().child("Project_App_Users").child(mUser.getUid());
-       databaseRef.addValueEventListener(new ValueEventListener() {
-           @Override
-           public void onDataChange(@NonNull DataSnapshot snapshot) {
-               User user_ob=snapshot.getValue(User.class);
-               user_name.setText(user_ob.getFirstName()+" "+user_ob.getLastName());
-               user_email.setText(mUser.getEmail());
-               Picasso.get().load(user_ob.getImage()).into(profile_image);
-
-           }
-
-           @Override
-           public void onCancelled(@NonNull DatabaseError error) {
-               Toast.makeText(DashActivity.this,error.getCode(), Toast.LENGTH_LONG).show();
-
-           }
-       });*/
 
     }
 
@@ -107,9 +157,11 @@ public class DashActivity extends AppCompatActivity implements NavigationView.On
         if(item.getItemId()==R.id.signOut)
         {
             mAuth.signOut();
+            //mSignInClient.signOut();
+
              Intent intent= new Intent(DashActivity.this,MainActivity.class);
-            intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);// In app it's not working: dunno why
-            startActivity(intent);
+             startActivity(intent);
+             finish();
         }
         return super.onOptionsItemSelected(item);
     }
@@ -127,5 +179,28 @@ public class DashActivity extends AppCompatActivity implements NavigationView.On
 
         drawerLayout.closeDrawer(GravityCompat.START);
         return true;
+    }
+
+    private void getPhoto(){
+        /*mUser=mAuth.getCurrentUser();
+       databaseRef= FirebaseDatabase.getInstance().getReference().child("Project_App_Users").child(mUser.getUid());
+       databaseRef.addValueEventListener(new ValueEventListener() {
+           @Override
+           public void onDataChange(@NonNull DataSnapshot snapshot) {
+               User user_ob=snapshot.getValue(User.class);
+               user_name.setText(user_ob.getFirstName()+" "+user_ob.getLastName());
+               user_email.setText(mUser.getEmail());
+               Picasso.get().load(user_ob.getImage()).into(profile_image);
+
+           }
+
+           @Override
+           public void onCancelled(@NonNull DatabaseError error) {
+               Toast.makeText(DashActivity.this,error.getCode(), Toast.LENGTH_LONG).show();
+
+           }
+       });*/
+
+
     }
 }
